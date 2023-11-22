@@ -1,245 +1,25 @@
 <!DOCTYPE html>
- <html lang="en">
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Text Type</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="./style.css">
 
- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
-     <title>Auto Text Typer</title>
- </head>
 
+</head>
 <body>
-   <style>
-    @import 
-    url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&family=Calligraffitti&display=swap');
-    
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        margin: 0;
-        height: 100vh;
-        overflow: hidden;
-        background: black;
-    }
-    
-    .container {
-        width: 100%;
-        height: 100vh;
-        background-color: #020412;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    } 
-    
-    h1 {
-        font-size: 75px;
-        font-family: 'Roboto Mono';
-        font-weight: 700;
-        position: absolute;
-        text-shadow: -15px 5px 20px #ced0d3;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        letter-spacing: 0.02em;
-        text-align: center;
-        color: #F9f1cc;/*
-        text-shadow: 5px 5px 0px #FFB650, 
-          10px 10px 0px #FFD662, 
-          15px 15px 0px  #FF80BF, 
-          20px 20px 0px #EF5097, 
-          25px 25px 0px #6868AC, 
-          30px 30px 0px #90B1E0;*/
-    } 
-    
-    span {
-        color: darkkhaki;
-    }
-   </style>
 
 
      <div class="container">
 
-        <h1>I'm a <span class="auto-type">Programmer</span></h1>
+        <h1>I'm a <span id="auto-type"></span></h1>
 
     </div>
 
-
-<script>
-    
-var typed = new Typed(".auto-type",{
-    strings : ["Programmer","Designer", "YouTuber"],
-    typeSpeed : 150,
-    backSpeed : 150,
-    loop: true,
-} )
-
-
-// Background
-
-/*--------------------
-Vars
---------------------*/
-const deg = (a) => Math.PI / 180 * a
-const rand = (v1, v2) => Math.floor(v1 + Math.random() * (v2 - v1))
-const opt = {
-  particles: window.width / 500 ? 1000 : 500,
-  noiseScale: 0.009,
-  angle: Math.PI / 180 * -90,
-  h1: rand(0, 360),
-  h2: rand(0, 360),
-  s1: rand(20, 90),
-  s2: rand(20, 90),
-  l1: rand(30, 80),
-  l2: rand(30, 80),
-  strokeWeight: 1.2,
-  tail: 82,
-}
-const Particles = []
-let time = 0
-document.body.addEventListener('click', () => {
-  opt.h1 = rand(0, 360)
-  opt.h2 = rand(0, 360)
-  opt.s1 = rand(20, 90)
-  opt.s2 = rand(20, 90)
-  opt.l1 = rand(30, 80)
-  opt.l2 = rand(30, 80)
-  opt.angle += deg(random(60, 60)) * (Math.random() > .5 ? 1 : -1)
-  
-  for (let p of Particles) {
-    p.randomize()
-  }
-})
-
-
-/*--------------------
-Particle
---------------------*/
-class Particle {
-  constructor(x, y) {
-    this.x = x
-    this.y = y
-    this.lx = x
-    this.ly = y
-    this.vx = 0
-    this.vy = 0
-    this.ax = 0
-    this.ay = 0
-    this.hueSemen = Math.random()
-    this.hue = this.hueSemen > .5 ? 20 + opt.h1 : 20 + opt.h2
-    this.sat = this.hueSemen > .5 ? opt.s1 : opt.s2
-    this.light = this.hueSemen > .5 ? opt.l1 : opt.l2
-    this.maxSpeed = this.hueSemen > .5 ? 3 : 2
-  }
-  
-  randomize() {
-    this.hueSemen = Math.random()
-    this.hue = this.hueSemen > .5 ? 20 + opt.h1 : 20 + opt.h2
-    this.sat = this.hueSemen > .5 ? opt.s1 : opt.s2
-    this.light = this.hueSemen > .5 ? opt.l1 : opt.l2
-    this.maxSpeed = this.hueSemen > .5 ? 3 : 2
-  }
-  
-  update() {
-    this.follow()
-    
-    this.vx += this.ax
-    this.vy += this.ay
-    
-    var p = Math.sqrt(this.vx * this.vx + this.vy * this.vy)
-    var a = Math.atan2(this.vy, this.vx)
-    var m = Math.min(this.maxSpeed, p)
-    this.vx = Math.cos(a) * m
-    this.vy = Math.sin(a) * m
-    
-    this.x += this.vx
-    this.y += this.vy
-    this.ax = 0
-    this.ay = 0
-    
-    this.edges()
-  }
-  
-  follow() {
-    let angle = (noise(this.x * opt.noiseScale, this.y * opt.noiseScale, time * opt.noiseScale)) * Math.PI * 0.5 + opt.angle
-    
-    this.ax += Math.cos(angle)
-    this.ay += Math.sin(angle)
-    
-  }
-  
-  updatePrev() {
-    this.lx = this.x
-    this.ly = this.y
-  }
-  
-  edges() {
-    if (this.x < 0) {
-      this.x = width
-      this.updatePrev()
-    }
-    if (this.x > width) {
-      this.x = 0
-      this.updatePrev()
-    }
-    if (this.y < 0) {
-      this.y = height
-      this.updatePrev()
-    }
-    if (this.y > height) {
-      this.y = 0
-      this.updatePrev()
-    }
-  }
-  
-  render () {
-    stroke(`hsla(${this.hue}, ${this.sat}%, ${this.light}%, .5)`)
-    line(this.x, this.y, this.lx, this.ly)
-    this.updatePrev()
-  }
-}
-
-
-/*--------------------
-Setup
---------------------*/
-function setup() {
-  createCanvas(windowWidth, windowHeight)
-  for (let i = 0; i < opt.particles; i++) {
-    Particles.push(new Particle(Math.random() * width, Math.random() * height))
-  }
-  strokeWeight(opt.strokeWeight)
-}
-
-
-/*--------------------
-Draw
---------------------*/
-function draw() {
-  time++
-  background(0, 100 - opt.tail)
-  
-  for (let p of Particles) {
-    p.update()
-    p.render()
-  }
-}
-
-
-/*--------------------
-Resize
---------------------*/
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight)
-}
-
-</script>
- <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script> 
-<script src="./index.js"></script>
-
-
- </body>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.min.js'></script>
+<script src="https://cdn.jsdelivr.net/nppm/typed.js@2.0.12"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.js"></script>
+<script src="./script.js"></script>
+</body>
+</html>
